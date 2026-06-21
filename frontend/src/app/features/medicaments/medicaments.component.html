@@ -1,0 +1,66 @@
+<div class="page-container">
+  <div class="page-header">
+    <h2>Médicaments</h2>
+    <button class="btn btn-primary" (click)="openCreate()">+ Nouveau médicament</button>
+  </div>
+
+  <div class="form-group" style="max-width:400px;margin-bottom:1rem">
+    <input type="text" [(ngModel)]="search" (input)="applySearch()" placeholder="Rechercher par nom ou principe actif..." />
+  </div>
+
+  @if (filtered.length === 0) {
+    <div class="empty-state">Aucun médicament trouvé.</div>
+  } @else {
+    <table>
+      <thead>
+        <tr>
+          <th>Nom commercial</th>
+          <th>Principe actif</th>
+          <th>Dosage</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (med of filtered; track med.idMedicament) {
+          <tr>
+            <td>{{ med.nomCommercial }}</td>
+            <td>{{ med.principeActif }}</td>
+            <td>{{ med.dosage }}</td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn btn-warning" (click)="openEdit(med)">Modifier</button>
+                <button class="btn btn-danger" (click)="delete(med.idMedicament)">Supprimer</button>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+
+  @if (showForm) {
+    <div class="modal-overlay" (click)="closeModal()">
+      <div class="modal-box" (click)="$event.stopPropagation()">
+        <h3>{{ editingId ? 'Modifier' : 'Créer' }} un médicament</h3>
+        <form [formGroup]="medicamentForm">
+          <div class="form-group">
+            <label>Nom commercial</label>
+            <input type="text" formControlName="nomCommercial" />
+          </div>
+          <div class="form-group">
+            <label>Principe actif</label>
+            <input type="text" formControlName="principeActif" />
+          </div>
+          <div class="form-group">
+            <label>Dosage</label>
+            <input type="text" formControlName="dosage" />
+          </div>
+        </form>
+        <div class="modal-actions">
+          <button class="btn btn-secondary" (click)="closeModal()">Annuler</button>
+          <button class="btn btn-primary" (click)="save()" [disabled]="medicamentForm.invalid">Enregistrer</button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

@@ -1,0 +1,85 @@
+<div class="page-container">
+  <div class="portal-header">
+    <div>
+      <h2>Espace Médecin</h2>
+      <p class="subtitle">Dr. {{ authService.getNom() }}</p>
+    </div>
+  </div>
+
+  <!-- Stats rapides -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-num">{{ rdvAujourdhui.length }}</div>
+      <div class="stat-label">Rendez-vous aujourd'hui</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">{{ rdvAVenir.length }}</div>
+      <div class="stat-label">Prochains rendez-vous</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">{{ rdvList.length }}</div>
+      <div class="stat-label">Total rendez-vous</div>
+    </div>
+  </div>
+
+  <!-- Aujourd'hui -->
+  @if (rdvAujourdhui.length > 0) {
+    <div class="section">
+      <h3 class="section-title">Aujourd'hui</h3>
+      <div class="card-grid">
+        @for (rdv of rdvAujourdhui; track rdv.idRDV) {
+          <div class="rdv-card rdv-today">
+            <div class="rdv-time">{{ rdv.dateHeure | date:'HH:mm' }}</div>
+            <div class="rdv-patient">{{ getPatientNom(rdv.idPatient) }}</div>
+            <div class="rdv-motif">{{ rdv.motif }}</div>
+            <div class="rdv-footer">
+              <span [class]="badgeClass(rdv.statut)">{{ rdv.statut }}</span>
+              <select class="statut-select" [value]="rdv.statut" (change)="changerStatut(rdv, $any($event.target).value)">
+                @for (s of statuts; track s) {
+                  <option [value]="s">{{ s }}</option>
+                }
+              </select>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- Tous les rendez-vous -->
+  <div class="section">
+    <h3 class="section-title">Tous mes rendez-vous</h3>
+    @if (rdvList.length === 0) {
+      <div class="empty-state">Aucun rendez-vous pour l'instant.</div>
+    } @else {
+      <table>
+        <thead>
+          <tr>
+            <th>Date &amp; Heure</th>
+            <th>Patient</th>
+            <th>Motif</th>
+            <th>Statut</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (rdv of rdvList; track rdv.idRDV) {
+            <tr>
+              <td>{{ rdv.dateHeure | date:'dd/MM/yyyy HH:mm' }}</td>
+              <td>{{ getPatientNom(rdv.idPatient) }}</td>
+              <td>{{ rdv.motif }}</td>
+              <td><span [class]="badgeClass(rdv.statut)">{{ rdv.statut }}</span></td>
+              <td>
+                <select class="statut-select" [value]="rdv.statut" (change)="changerStatut(rdv, $any($event.target).value)">
+                  @for (s of statuts; track s) {
+                    <option [value]="s">{{ s }}</option>
+                  }
+                </select>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  </div>
+</div>

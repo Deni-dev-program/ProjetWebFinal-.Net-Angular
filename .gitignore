@@ -1,0 +1,23 @@
+# Angular
+frontend/node_modules/
+frontend/.angular/
+frontend/dist/
+frontend/.sass-cache/
+
+# .NET
+backend/**/bin/
+backend/**/obj/
+backend/**/*.user
+backend/**/*.suo
+backend/.vs/
+
+# IDE
+.vscode/
+.idea/
+*.DS_Store
+
+# Environnements locaux
+backend/Api/appsettings.Development.json
+
+# Logs
+*.log

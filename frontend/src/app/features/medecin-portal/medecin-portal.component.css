@@ -1,0 +1,78 @@
+.portal-header {
+  margin-bottom: 1.5rem;
+}
+
+.portal-header h2 {
+  font-size: 1.6rem;
+  color: #1a237e;
+  margin-bottom: .2rem;
+}
+
+.subtitle {
+  color: #666;
+  font-size: .95rem;
+}
+
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.section {
+  margin-bottom: 2rem;
+}
+
+.section-title {
+  font-size: 1.1rem;
+  color: #1a237e;
+  margin-bottom: 1rem;
+  padding-bottom: .4rem;
+  border-bottom: 2px solid #e3f2fd;
+}
+
+.rdv-card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,.08);
+  border-left: 4px solid #1976d2;
+}
+
+.rdv-today {
+  border-left-color: #388e3c;
+}
+
+.rdv-time {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #388e3c;
+  margin-bottom: .3rem;
+}
+
+.rdv-patient {
+  font-weight: 600;
+  color: #1a237e;
+  margin-bottom: .2rem;
+}
+
+.rdv-motif {
+  font-size: .9rem;
+  color: #666;
+  margin-bottom: .8rem;
+}
+
+.rdv-footer {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+}
+
+.statut-select {
+  padding: .25rem .5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: .82rem;
+  cursor: pointer;
+}

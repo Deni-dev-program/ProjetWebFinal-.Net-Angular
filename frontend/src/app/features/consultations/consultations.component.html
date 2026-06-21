@@ -1,0 +1,79 @@
+<div class="page-container">
+  <div class="page-header">
+    <h2>Consultations</h2>
+    <button class="btn btn-primary" (click)="openCreate()">+ Nouvelle consultation</button>
+  </div>
+
+  @if (consultations.length === 0) {
+    <div class="empty-state">Aucune consultation enregistrée.</div>
+  } @else {
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Diagnostic</th>
+          <th>Prix</th>
+          <th>Médecin</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (c of consultations; track c.idConsultation) {
+          <tr>
+            <td>{{ c.dateConsultation | date: 'dd/MM/yyyy' }}</td>
+            <td>{{ c.diagnostic }}</td>
+            <td>{{ c.prix | currency: 'EUR' : 'symbol' : '1.2-2' }}</td>
+            <td>{{ getMedecinNom(c.idMedecin) }}</td>
+            <td>
+              <button class="btn btn-danger" (click)="delete(c.idConsultation)">Supprimer</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+
+  @if (showForm) {
+    <div class="modal-overlay" (click)="closeModal()">
+      <div class="modal-box" (click)="$event.stopPropagation()">
+        <h3>Nouvelle consultation</h3>
+        <form [formGroup]="consultForm">
+          <div class="form-group">
+            <label>Patient</label>
+            <select formControlName="idPatient">
+              <option [value]="null">-- Sélectionner --</option>
+              @for (p of patients; track p.idPatient) {
+                <option [value]="p.idPatient">{{ p.prenom }} {{ p.nom }}</option>
+              }
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Médecin</label>
+            <select formControlName="idMedecin">
+              <option [value]="null">-- Sélectionner --</option>
+              @for (m of medecins; track m.idMedecin) {
+                <option [value]="m.idMedecin">Dr. {{ m.nom }} — {{ m.specialite }}</option>
+              }
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Date de consultation</label>
+            <input type="datetime-local" formControlName="dateConsultation" />
+          </div>
+          <div class="form-group">
+            <label>Diagnostic</label>
+            <textarea formControlName="diagnostic" rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Prix (€)</label>
+            <input type="number" formControlName="prix" min="0" step="0.01" />
+          </div>
+        </form>
+        <div class="modal-actions">
+          <button class="btn btn-secondary" (click)="closeModal()">Annuler</button>
+          <button class="btn btn-primary" (click)="save()" [disabled]="consultForm.invalid">Enregistrer</button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

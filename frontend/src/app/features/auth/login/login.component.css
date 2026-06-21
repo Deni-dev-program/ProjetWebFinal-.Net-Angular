@@ -1,0 +1,105 @@
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1565c0 0%, #0d47a1 100%);
+  padding: 1rem;
+}
+
+.login-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 16px 48px rgba(0,0,0,.2);
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 1.8rem;
+}
+
+.login-header h1 {
+  font-size: 1.6rem;
+  color: #1a237e;
+  margin-bottom: .4rem;
+}
+
+.login-header p {
+  color: #777;
+  font-size: .9rem;
+}
+
+.tab-switcher {
+  display: flex;
+  background: #f4f6f8;
+  border-radius: 8px;
+  padding: 4px;
+  margin-bottom: 1.5rem;
+  gap: 4px;
+}
+
+.tab-switcher button {
+  flex: 1;
+  padding: .5rem;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: .85rem;
+  color: #666;
+  transition: all .2s;
+}
+
+.tab-switcher button.active {
+  background: #fff;
+  color: #1565c0;
+  font-weight: 700;
+  box-shadow: 0 1px 4px rgba(0,0,0,.1);
+}
+
+.alert-error {
+  background: #fce4ec;
+  color: #c62828;
+  padding: .7rem 1rem;
+  border-radius: 6px;
+  font-size: .9rem;
+  margin-bottom: 1rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .8rem;
+}
+
+.btn-full {
+  width: 100%;
+  padding: .75rem;
+  font-size: 1rem;
+  margin-top: .5rem;
+}
+
+.demo-hints {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: #e3f2fd;
+  border-radius: 8px;
+  font-size: .82rem;
+  color: #1565c0;
+}
+
+.demo-hints p {
+  margin-bottom: .4rem;
+}
+
+.demo-hints ul {
+  list-style: none;
+  padding: 0;
+}
+
+.demo-hints li {
+  padding: .2rem 0;
+}

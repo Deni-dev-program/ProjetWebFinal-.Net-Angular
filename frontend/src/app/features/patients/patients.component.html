@@ -1,0 +1,119 @@
+<div class="page-container">
+  <div class="page-header">
+    <h2>Gestion des patients</h2>
+    <button class="btn btn-primary" (click)="openCreate()">+ Nouveau patient</button>
+  </div>
+
+  @if (patients.length === 0) {
+    <div class="empty-state">Aucun patient enregistré.</div>
+  } @else {
+    <table>
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Prénom</th>
+          <th>Âge</th>
+          <th>Sexe</th>
+          <th>Téléphone</th>
+          <th>Email</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (patient of patients; track patient.idPatient) {
+          <tr>
+            <td>{{ patient.nom }}</td>
+            <td>{{ patient.prenom }}</td>
+            <td>{{ age(patient.dateNaissance) }} ans</td>
+            <td>
+              @switch (patient.sexe) {
+                @case ('M') { <span class="badge badge-info">Homme</span> }
+                @case ('F') { <span class="badge badge-success">Femme</span> }
+                @default { <span class="badge badge-warning">{{ patient.sexe }}</span> }
+              }
+            </td>
+            <td>{{ patient.telephone }}</td>
+            <td>{{ patient.email }}</td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn btn-secondary" (click)="viewDossier(patient)">Dossier</button>
+                <button class="btn btn-warning" (click)="openEdit(patient)">Modifier</button>
+                <button class="btn btn-danger" (click)="delete(patient.idPatient)">Supprimer</button>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+
+  @if (showForm) {
+    <div class="modal-overlay" (click)="closeModal()">
+      <div class="modal-box" (click)="$event.stopPropagation()">
+        <h3>{{ editingId ? 'Modifier' : 'Créer' }} un patient</h3>
+        <form [formGroup]="patientForm">
+          <div class="form-group">
+            <label>Nom</label>
+            <input type="text" formControlName="nom" />
+          </div>
+          <div class="form-group">
+            <label>Prénom</label>
+            <input type="text" formControlName="prenom" />
+          </div>
+          <div class="form-group">
+            <label>Date de naissance</label>
+            <input type="date" formControlName="dateNaissance" />
+          </div>
+          <div class="form-group">
+            <label>Sexe</label>
+            <select formControlName="sexe">
+              <option value="M">Homme</option>
+              <option value="F">Femme</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Téléphone</label>
+            <input type="text" formControlName="telephone" />
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" formControlName="email" />
+          </div>
+        </form>
+        <div class="modal-actions">
+          <button class="btn btn-secondary" (click)="closeModal()">Annuler</button>
+          <button class="btn btn-primary" (click)="save()" [disabled]="patientForm.invalid">Enregistrer</button>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (showDossier) {
+    <div class="modal-overlay" (click)="closeModal()">
+      <div class="modal-box" (click)="$event.stopPropagation()">
+        <h3>Dossier médical — {{ selectedPatient?.prenom }} {{ selectedPatient?.nom }}</h3>
+        @if (dossierError) {
+          <p style="color:#c62828">{{ dossierError }}</p>
+        } @else if (dossier) {
+          <div class="form-group">
+            <label>Groupe sanguin</label>
+            <p>{{ dossier.groupeSanguin }}</p>
+          </div>
+          <div class="form-group">
+            <label>Antécédents</label>
+            <p>{{ dossier.antecedents || 'Aucun' }}</p>
+          </div>
+          <div class="form-group">
+            <label>Allergies</label>
+            <p>{{ dossier.allergies || 'Aucune' }}</p>
+          </div>
+        } @else {
+          <p>Chargement...</p>
+        }
+        <div class="modal-actions">
+          <button class="btn btn-secondary" (click)="closeModal()">Fermer</button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

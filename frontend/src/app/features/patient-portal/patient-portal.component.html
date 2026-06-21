@@ -1,0 +1,152 @@
+<div class="page-container">
+  <div class="portal-header">
+    <div>
+      <h2>Mon Espace Patient</h2>
+      <p class="subtitle">Bonjour, {{ authService.getPrenom() }} {{ authService.getNom() }}</p>
+    </div>
+  </div>
+
+  <div class="portal-tabs">
+    <button [class.tab-active]="activeTab === 'rdv'" (click)="activeTab = 'rdv'">
+      Mes rendez-vous
+    </button>
+    <button [class.tab-active]="activeTab === 'profil'" (click)="activeTab = 'profil'">
+      Mon profil
+    </button>
+  </div>
+
+  <!-- ===== ONGLET RDV ===== -->
+  @if (activeTab === 'rdv') {
+    <div class="page-header">
+      <h3>Mes rendez-vous</h3>
+      <button class="btn btn-primary" (click)="openNewRdv()">+ Nouveau rendez-vous</button>
+    </div>
+
+    @if (rdvList.length === 0) {
+      <div class="empty-state">Aucun rendez-vous. Prenez votre premier rendez-vous !</div>
+    } @else {
+      <table>
+        <thead>
+          <tr>
+            <th>Date &amp; Heure</th>
+            <th>Médecin</th>
+            <th>Motif</th>
+            <th>Statut</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (rdv of rdvList; track rdv.idRDV) {
+            <tr>
+              <td>{{ rdv.dateHeure | date:'dd/MM/yyyy HH:mm' }}</td>
+              <td>{{ getMedecinNom(rdv.idMedecin) }}</td>
+              <td>{{ rdv.motif }}</td>
+              <td><span [class]="badgeClass(rdv.statut)">{{ rdv.statut }}</span></td>
+              <td>
+                <div class="action-buttons">
+                  @if (canModify(rdv)) {
+                    <button class="btn btn-secondary" (click)="openEditRdv(rdv)">Modifier</button>
+                    <button class="btn btn-danger" (click)="annulerRdv(rdv)">Annuler</button>
+                  }
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  }
+
+  <!-- ===== ONGLET PROFIL ===== -->
+  @if (activeTab === 'profil') {
+    <div class="profil-section">
+      <div class="page-header">
+        <h3>Mon profil</h3>
+        @if (!profilEditMode) {
+          <button class="btn btn-primary" (click)="profilEditMode = true">Modifier</button>
+        }
+      </div>
+
+      @if (!profilEditMode && profil) {
+        <div class="info-card profil-card">
+          <p><strong>Nom :</strong> {{ profil.nom }}</p>
+          <p><strong>Prénom :</strong> {{ profil.prenom }}</p>
+          <p><strong>Date de naissance :</strong> {{ profil.dateNaissance | date:'dd/MM/yyyy' }}</p>
+          <p><strong>Sexe :</strong> {{ profil.sexe === 'M' ? 'Masculin' : 'Féminin' }}</p>
+          <p><strong>Téléphone :</strong> {{ profil.telephone }}</p>
+          <p><strong>Email :</strong> {{ profil.email }}</p>
+        </div>
+      }
+
+      @if (profilEditMode) {
+        <form [formGroup]="profilForm" (ngSubmit)="saveProfil()" class="profil-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Nom</label>
+              <input type="text" formControlName="nom" />
+            </div>
+            <div class="form-group">
+              <label>Prénom</label>
+              <input type="text" formControlName="prenom" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Date de naissance</label>
+            <input type="date" formControlName="dateNaissance" />
+          </div>
+          <div class="form-group">
+            <label>Sexe</label>
+            <select formControlName="sexe">
+              <option value="M">Masculin</option>
+              <option value="F">Féminin</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Téléphone</label>
+            <input type="text" formControlName="telephone" />
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" formControlName="email" />
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="btn btn-secondary" (click)="profilEditMode = false">Annuler</button>
+            <button type="submit" class="btn btn-success">Sauvegarder</button>
+          </div>
+        </form>
+      }
+    </div>
+  }
+</div>
+
+<!-- ===== MODAL RDV ===== -->
+@if (showRdvForm) {
+  <div class="modal-overlay" (click)="showRdvForm = false">
+    <div class="modal-box" (click)="$event.stopPropagation()">
+      <h3>{{ editingRdv ? 'Modifier le rendez-vous' : 'Nouveau rendez-vous' }}</h3>
+      <form [formGroup]="rdvForm" (ngSubmit)="saveRdv()">
+        <div class="form-group">
+          <label>Date et heure</label>
+          <input type="datetime-local" formControlName="dateHeure" />
+        </div>
+        <div class="form-group">
+          <label>Médecin</label>
+          <select formControlName="idMedecin">
+            <option [value]="null" disabled>-- Choisir un médecin --</option>
+            @for (m of medecins; track m.idMedecin) {
+              <option [value]="m.idMedecin">Dr. {{ m.nom }} — {{ m.specialite }}</option>
+            }
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Motif</label>
+          <input type="text" formControlName="motif" placeholder="Raison de la consultation" />
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" (click)="showRdvForm = false">Annuler</button>
+          <button type="submit" class="btn btn-primary">Confirmer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

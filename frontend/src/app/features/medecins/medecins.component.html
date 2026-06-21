@@ -1,0 +1,50 @@
+<div class="page-container">
+  <div class="page-header">
+    <h2>Gestion des médecins</h2>
+    <button class="btn btn-primary" (click)="openCreate()">+ Nouveau médecin</button>
+  </div>
+
+  @if (medecins.length === 0) {
+    <div class="empty-state">Aucun médecin enregistré.</div>
+  } @else {
+    <div class="card-grid">
+      @for (medecin of medecins; track medecin.idMedecin) {
+        <div class="info-card">
+          <h3>Dr. {{ medecin.nom }}</h3>
+          <p><strong>Spécialité :</strong> {{ medecin.specialite }}</p>
+          <p><strong>Email :</strong> {{ medecin.emailPro }}</p>
+          <div class="action-buttons">
+            <button class="btn btn-warning" (click)="openEdit(medecin)">Modifier</button>
+            <button class="btn btn-danger" (click)="delete(medecin.idMedecin)">Supprimer</button>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  @if (showForm) {
+    <div class="modal-overlay" (click)="closeModal()">
+      <div class="modal-box" (click)="$event.stopPropagation()">
+        <h3>{{ editingId ? 'Modifier' : 'Créer' }} un médecin</h3>
+        <form [formGroup]="medecinForm">
+          <div class="form-group">
+            <label>Nom</label>
+            <input type="text" formControlName="nom" />
+          </div>
+          <div class="form-group">
+            <label>Spécialité</label>
+            <input type="text" formControlName="specialite" />
+          </div>
+          <div class="form-group">
+            <label>Email professionnel</label>
+            <input type="email" formControlName="emailPro" />
+          </div>
+        </form>
+        <div class="modal-actions">
+          <button class="btn btn-secondary" (click)="closeModal()">Annuler</button>
+          <button class="btn btn-primary" (click)="save()" [disabled]="medecinForm.invalid">Enregistrer</button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

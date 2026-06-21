@@ -1,0 +1,84 @@
+<div class="page-container">
+  <div class="page-header">
+    <h2>Rendez-vous</h2>
+    <button class="btn btn-primary" (click)="openCreate()">+ Nouveau rendez-vous</button>
+  </div>
+
+  @if (rdvList.length === 0) {
+    <div class="empty-state">Aucun rendez-vous planifié.</div>
+  } @else {
+    <table>
+      <thead>
+        <tr>
+          <th>Date & heure</th>
+          <th>Patient</th>
+          <th>Médecin</th>
+          <th>Motif</th>
+          <th>Statut</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (rdv of rdvList; track rdv.idRDV) {
+          <tr>
+            <td>{{ rdv.dateHeure | date: 'dd/MM/yyyy HH:mm' }}</td>
+            <td>{{ getPatientNom(rdv.idPatient) }}</td>
+            <td>{{ getMedecinNom(rdv.idMedecin) }}</td>
+            <td>{{ rdv.motif }}</td>
+            <td><span [class]="badgeClass(rdv.statut)">{{ rdv.statut }}</span></td>
+            <td>
+              <div class="action-buttons">
+                <select (change)="updateStatut(rdv, $any($event.target).value)" [value]="rdv.statut" style="padding:.3rem .5rem;border-radius:4px;border:1px solid #ccc">
+                  @for (s of statuts; track s) {
+                    <option [value]="s">{{ s }}</option>
+                  }
+                </select>
+                <button class="btn btn-danger" (click)="delete(rdv.idRDV)">Supprimer</button>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+
+  @if (showForm) {
+    <div class="modal-overlay" (click)="closeModal()">
+      <div class="modal-box" (click)="$event.stopPropagation()">
+        <h3>Nouveau rendez-vous</h3>
+        <form [formGroup]="rdvForm">
+          <div class="form-group">
+            <label>Date et heure</label>
+            <input type="datetime-local" formControlName="dateHeure" />
+          </div>
+          <div class="form-group">
+            <label>Motif</label>
+            <input type="text" formControlName="motif" />
+          </div>
+          <div class="form-group">
+            <label>Patient</label>
+            <select formControlName="idPatient">
+              <option [value]="null">-- Sélectionner --</option>
+              @for (p of patients; track p.idPatient) {
+                <option [value]="p.idPatient">{{ p.prenom }} {{ p.nom }}</option>
+              }
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Médecin</label>
+            <select formControlName="idMedecin">
+              <option [value]="null">-- Sélectionner --</option>
+              @for (m of medecins; track m.idMedecin) {
+                <option [value]="m.idMedecin">Dr. {{ m.nom }} — {{ m.specialite }}</option>
+              }
+            </select>
+          </div>
+        </form>
+        <div class="modal-actions">
+          <button class="btn btn-secondary" (click)="closeModal()">Annuler</button>
+          <button class="btn btn-primary" (click)="save()" [disabled]="rdvForm.invalid">Enregistrer</button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

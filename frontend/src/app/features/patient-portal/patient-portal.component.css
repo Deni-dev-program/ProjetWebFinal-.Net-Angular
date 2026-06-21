@@ -1,0 +1,65 @@
+.portal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.portal-header h2 {
+  font-size: 1.6rem;
+  color: #1a237e;
+  margin-bottom: .2rem;
+}
+
+.subtitle {
+  color: #666;
+  font-size: .95rem;
+}
+
+.portal-tabs {
+  display: flex;
+  gap: .5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: .5rem;
+}
+
+.portal-tabs button {
+  padding: .5rem 1.2rem;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: .95rem;
+  color: #666;
+  border-radius: 6px 6px 0 0;
+  transition: all .2s;
+}
+
+.portal-tabs button.tab-active {
+  color: #1565c0;
+  font-weight: 700;
+  border-bottom: 2px solid #1565c0;
+  margin-bottom: -2px;
+}
+
+.profil-section {
+  max-width: 600px;
+}
+
+.profil-card p {
+  padding: .5rem 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.profil-form {
+  background: #fff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,.08);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .8rem;
+}

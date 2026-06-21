@@ -1,0 +1,33 @@
+@if (authService.isLoggedIn()) {
+  <div class="layout">
+    <nav>
+      <a class="brand" routerLink="/">Clinique Médicale</a>
+
+      @if (authService.getRole() === 'secretaire') {
+        <a routerLink="/dashboard" routerLinkActive="active">Tableau de bord</a>
+        <a routerLink="/patients" routerLinkActive="active">Patients</a>
+        <a routerLink="/medecins" routerLinkActive="active">Médecins</a>
+        <a routerLink="/rendezvous" routerLinkActive="active">Rendez-vous</a>
+        <a routerLink="/consultations" routerLinkActive="active">Consultations</a>
+        <a routerLink="/medicaments" routerLinkActive="active">Médicaments</a>
+      }
+
+      @if (authService.getRole() === 'patient') {
+        <a routerLink="/patient-portal" routerLinkActive="active">Mon espace</a>
+      }
+
+      @if (authService.getRole() === 'medecin') {
+        <a routerLink="/medecin-portal" routerLinkActive="active">Mon espace</a>
+      }
+
+      <div class="nav-spacer"></div>
+      <span class="nav-user">{{ authService.getPrenom() }} {{ authService.getNom() }}</span>
+      <button class="btn-logout" (click)="logout()">Déconnexion</button>
+    </nav>
+    <div class="layout-content">
+      <router-outlet />
+    </div>
+  </div>
+} @else {
+  <router-outlet />
+}
